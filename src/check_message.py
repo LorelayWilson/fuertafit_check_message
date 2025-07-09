@@ -18,10 +18,10 @@ def can_form_message(message, chest):
     message = message.replace(" ", "").lower()
     chest = chest.replace(" ", "").lower()
 
-    # Si el mensaje queda vacío tras limpiar, devolver False
+    # Si el mensaje queda vacío tras limpiar, devolver True
     if not message:
         return True, "Mensaje vacío: no requiere caracteres para formarse."
-
+    # Si el cofre está vacío, devolver False
     if not chest:
         return False, "El cofre no contiene caracteres válidos."
 

@@ -34,7 +34,7 @@ Sigue estos pasos para clonar y ejecutar el proyecto localmente:
 
 ### 1. Clona el repositorio y accede al directorio raíz del proyecto:
 ```bash
-git clone https://github.com/tu-usuario/fuertafit-message-checker.git
+git clone https://github.com/LorelayWilson/fuertafit_check_message
 cd prueba_tecnica_fuertafit
 ```
 ### 2. Probar la función:
