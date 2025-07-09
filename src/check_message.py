@@ -26,21 +26,27 @@ def can_form_message(message, chest):
         return False, "El cofre no contiene caracteres válidos."
 
     # Contar los caracteres disponibles en el cofre
-    letter_count = Counter(chest)
+    chest_counter = Counter(chest)
 
-    # Verificar si cada caracter del mensaje puede ser formada con los caracteres del cofre
-    for letter in message:
-        if letter_count[letter] > 0:
-            letter_count[letter] -= 1
+    # Contar los caracteres necesarios en el mensaje
+    missing_counter = Counter()
+    for char in message:
+        if chest_counter[char] > 0:
+            chest_counter[char] -= 1
         else:
-            return False, f"No hay suficientes caracteres '{letter}' en el cofre."
+            missing_counter[char] += 1
 
+    # Si hay caracteres que faltan, devolver False con los caracteres que faltan
+    if missing_counter:
+        missing_str = ', '.join(f"{char}({count})" for char, count in missing_counter.items())
+        return False, f"Faltan caracteres: {missing_str}"
+    
     return True, "El mensaje puede ser formado con los caracteres del cofre."
 
 if __name__ == "__main__":
     print(can_form_message("SOS", "PELIGROSOS"))    # True
     print(can_form_message("HELP", "HELICOPTER"))   # True
-    print(can_form_message("RESCUE", "RSCU"))       # False
+    print(can_form_message("RESCUEA", "RSCU"))       # False
     print(can_form_message("Ñ", "N"))       # False
     print(can_form_message("112", "112A"))       # True
 
