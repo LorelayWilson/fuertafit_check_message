@@ -15,8 +15,8 @@ def can_form_message(message, chest):
         tuple: (bool, str) indicando si se puede formar y un mensaje explicativo.
     """
     # Normalizar el mensaje y el cofre: eliminar espacio
-    message = message.replace(" ", "")
-    chest = chest.replace(" ", "")
+    message = message.replace(" ", "").lower()
+    chest = chest.replace(" ", "").lower()
 
     # Si el mensaje queda vacío tras limpiar, devolver False
     if not message:

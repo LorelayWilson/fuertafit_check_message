@@ -14,6 +14,11 @@ class TestCanFormMessage(unittest.TestCase):
         self.assertFalse(can_form_message("AAAB", "AAB")[0])
         self.assertTrue(can_form_message("AAB", "AAAB")[0])
         self.assertTrue(can_form_message("PYTHON", "PYTHON")[0])
+    
+    def test_case_insensitivity(self):
+        self.assertTrue(can_form_message("sos", "PELIGROSOS")[0])
+        self.assertTrue(can_form_message("Help", "HELICOPTER")[0])
+        self.assertFalse(can_form_message("rescue", "RSCU")[0])
  
 if __name__ == '__main__':
     unittest.main()
