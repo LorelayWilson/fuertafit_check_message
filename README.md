@@ -43,7 +43,7 @@ cd fuertafit_check_message
 ```python
 python src/check_message.py
 ```
-> Si deseas usar la función con entradas personalizadas, puedes editar directamente el archivo `check_message.py` o importar la función desde otro script.
+> Para usar la función con entradas personalizadas, puedes editar directamente el archivo `check_message.py` o importar la función desde otro script.
 
 ## Funcionamiento de la función principal
 
@@ -51,7 +51,7 @@ La función `can_form_message(message: str, chest: str) -> tuple[bool, str]` det
 
 Devuelve una tupla formada por:
 - Un `bool` indicando si el mensaje puede formarse (`True` o `False`)
-- Un `str` explicativo con el motivo (éxito o el caracter que falta)
+- Un `str` explicativo con el motivo (éxito o los caracteres que faltan)
 
 ### Reglas que aplica:
 - Ignora espacios del mensaje y del cofre

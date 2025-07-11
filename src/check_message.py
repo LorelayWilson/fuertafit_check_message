@@ -1,4 +1,3 @@
-# File: src/check_message.py
 """
 Este módulo contiene una función que determina si un mensaje puede ser formado
 utilizando los caracteres disponibles en un cofre, ignorando espacios
@@ -14,7 +13,7 @@ def can_form_message(message, chest):
     Returns:
         tuple: (bool, str) indicando si se puede formar y un mensaje explicativo.
     """
-    # Normalizar el mensaje y el cofre: eliminar espacio
+    # Normalizar el mensaje y el cofre: eliminar espacio y pasar a minúsculas
     message = message.replace(" ", "").lower()
     chest = chest.replace(" ", "").lower()
 
@@ -31,10 +30,10 @@ def can_form_message(message, chest):
     # Contar los caracteres necesarios en el mensaje
     missing_counter = Counter()
     for char in message:
-        if chest_counter[char] > 0:
-            chest_counter[char] -= 1
+        if chest_counter[char] > 0:  # Si el caracter está disponible en el cofre
+            chest_counter[char] -= 1  # Usar el caracter
         else:
-            missing_counter[char] += 1
+            missing_counter[char] += 1  # Si no está disponible, contar como faltante
 
     # Si hay caracteres que faltan, devolver False con los caracteres que faltan
     if missing_counter:
@@ -46,7 +45,6 @@ def can_form_message(message, chest):
 if __name__ == "__main__":
     print(can_form_message("SOS", "PELIGROSOS"))    # True
     print(can_form_message("HELP", "HELICOPTER"))   # True
-    print(can_form_message("RESCUEA", "RSCU"))       # False
-    print(can_form_message("Ñ", "N"))       # False
-    print(can_form_message("112", "112A"))       # True
-
+    print(can_form_message("RESCUEA", "RSCU"))      # False
+    print(can_form_message("Ñ", "N"))               # False
+    print(can_form_message("112", "112A"))          # True

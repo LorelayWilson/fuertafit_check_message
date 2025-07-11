@@ -33,14 +33,13 @@ class TestCanFormMessage(unittest.TestCase):
         self.assertFalse(can_form_message("mañana!", "mañanaa")[0])
         result = can_form_message("ñandú", "nandu")
         self.assertFalse(result[0])
-        self.assertIn("ñ", result[1])
-        self.assertIn("ú", result[1])
+        self.assertEqual(result[1], "Faltan caracteres: ñ(1), ú(1)")
     
     def test_numerical_characters(self):
         self.assertTrue(can_form_message("112", "112A")[0])
         result = can_form_message("1123", "112")
         self.assertFalse(result[0])
-        self.assertIn("3(1)", result[1])
+        self.assertEqual(result[1], "Faltan caracteres: 3(1)")
 
     def test_empty_cases(self):
         self.assertEqual(can_form_message("", ""), (True, "Mensaje vacío: no requiere caracteres para formarse."))
