@@ -25,7 +25,7 @@ No se requiere instalación de librerías externas.
 ├── tests/
 │ └── test_check_message.py # Pruebas unitarias
 ├── README.md # Documentación del proyecto
-├── Analysis.md # Análisis técnico del proyecto
+├── analysis.md # Análisis técnico del proyecto
 └── .gitignore  # Exclusiones de Git
 
 ## Instalación y ejecución
@@ -35,7 +35,7 @@ Sigue estos pasos para clonar y ejecutar el proyecto localmente:
 ### 1. Clona el repositorio y accede al directorio raíz del proyecto:
 ```bash
 git clone https://github.com/LorelayWilson/fuertafit_check_message
-cd prueba_tecnica_fuertafit
+cd fuertafit_check_message
 ```
 ### 2. Probar la función:
 - Asegúrate de estar en el directorio raíz del proyecto.
@@ -75,7 +75,7 @@ can_form_message("", "AA")
 ## Tests
 El proyecto incluye un conjunto de **pruebas unitarias** escritas con el módulo estándar `unittest`, localizadas en el archivo:
 ```bash
-test/test_check_message.py
+tests/test_check_message.py
 ```
 
 ### ¿Qué cubren los tests?
