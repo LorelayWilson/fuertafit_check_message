@@ -117,7 +117,7 @@ This will automatically run all tests inside the  `tests/` folder.
 Graduate in Interactive Technologies and Project Manager with experience in .NET, Python, Angular, Azure DevOps, AI, and Agile methodologies.
 
 🔗 [LinkedIn](https://www.linkedin.com/in/lorelaypricop)  
-📧 Contact: lorelay.pricop@gmail.com
+📧 Contact: lorelaypricop@gmail.com
 
 # Notes
 > Some ideas regarding validation, style, and structure were reviewed with the support of artificial intelligence (AI) tools, used to help accelerate documentation and validate edge case
