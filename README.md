@@ -54,6 +54,16 @@ It returns a tuple:
 - A `bool` indicating whether the message can be formed (`True` or `False`)
 - An explanatory `str` with the reason (success or the missing characters)
 
+The function includes internal optimizations to improve efficiency when handling very large inputs. Depending on the size of the `message` and `chest`, it dynamically chooses the most efficient strategy:
+
+- If the chest is significantly larger than the message, it only counts relevant characters to avoid unnecessary processing.
+- If the message is longer than the chest, it fails early when missing characters are detected.
+- If both are of similar size, a balanced approach is used.
+
+This ensures fast and scalable performance even in extreme cases (e.g., long messages or massive character pools).
+
+The implementation is modular and internally structured into helper functions for character filtering, fast scanning, and comparison logic—improving readability and maintainability.
+
 ### Rules applied:
 - Ignores spaces in both the message and the chest
 - Case-insensitive (`a` and `A` are treated the same)
@@ -72,6 +82,7 @@ can_form_message("RESCUEA", "RSCU")
 can_form_message("", "AA")
 # Resultado: (True, "Empty message can always be formed.")
 ```
+
 
 ## Tests
 The project includes a set of **unit tests** written using Python’s standard `unittest` module, located in:

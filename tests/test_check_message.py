@@ -50,6 +50,12 @@ class TestCanFormMessage(unittest.TestCase):
         msg = "NEVER GONNA GIVE YOU UP NEVER GONNA LET YOU DOWN " * 5
         chest = "NEVERGONNAGIVEYOUUPNEVERGONNALETYOUDOWN" * 5
         self.assertEqual(can_form_message(msg, chest)[0], True)
+        msg = "NEVER GONNA GIVE YOU UP NEVER GONNA LET YOU DOWN " * 5
+        chest = "NEVERGONNAGIVEYOUUPNEVERGONNALETYOUDOWN"
+        self.assertEqual(can_form_message(msg, chest)[0], False)
+        msg = "NEVER GONNA GIVE YOU UP NEVER GONNA LET YOU DOWN " 
+        chest = "NEVERGONNAGIVEYOUUPNEVERGONNALETYOUDOWN" * 10
+        self.assertEqual(can_form_message(msg, chest), False)
  
 if __name__ == '__main__':
     unittest.main()

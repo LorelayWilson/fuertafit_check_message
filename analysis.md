@@ -16,6 +16,18 @@ There are no nested loops or expensive structures. Thanks to the use of `Counter
 > **Total complexity:** `O(m + n)`  
 > Linear performance relative to input size. Scalable even for large texts.
 
+### Adaptive Strategy Optimization
+
+To further improve practical performance, the function now applies an **adaptive strategy** based on the relative size of `message` and `chest`:
+
+- **When the chest is significantly larger** than the message (e.g., long text blocks or large dictionaries), only the characters relevant to the message are counted from the chest. This avoids building a complete character map unnecessarily, reducing both time and memory usage.
+  
+- **When the message is longer** than the chest, the function avoids full preprocessing and instead performs a **scan-and-fail-fast** loop: it walks through the message and returns as soon as a missing character is found, saving time for clearly impossible cases.
+
+- **When both inputs are of similar size**, the function uses a balanced and readable strategy: building two full `Counter` objects and comparing them.
+
+This approach retains **O(m + n)** complexity, but in real-world scenarios—especially with unbalanced input sizes—it yields **significant performance gains**.
+
 ### Space Complexity (Memory)
 
 > This analysis focuses on how much additional memory the algorithm uses (excluding the inputs).
@@ -57,6 +69,25 @@ This implementation makes deliberate decisions to balance performance, clarity, 
 | Completeness vs. Abstraction   | Ignored minor optimizations such as sorting `message`          | Faster development time, no impact on Big O            | Potential execution gains in specific inputs         |
 
 These decisions aim to create a robust, clear, efficient, and maintainable function without over-optimizing for rare edge cases.
+
+### Code Structure and Modularity
+
+The function is internally decomposed into several helper functions to isolate concerns and improve readability:
+
+- `_count_relevant(chest, needed_chars)`  
+  Efficiently counts only the characters from the chest that are relevant to the message.
+
+- `_scan_message_vs_small_chest(message, chest_counter)`  
+  Quickly scans large messages against a small chest and fails early if needed.
+
+- `_compare_counts(message_counter, chest_counter)`  
+  Compares full frequency maps to determine if all required characters are present.
+
+- `_format_missing(missing)`  
+  Formats the missing character report as a user-friendly string.
+
+This structure facilitates testing, reasoning, and future extension of the algorithm.
+
 ### Handled Edge Cases
 
 The function is designed to handle the following edge cases correctly:
@@ -97,8 +128,9 @@ These validations are reflected in the included unit test suite.
 5. **Invisible characters not detected:**  
    Characters like non-breaking spaces (`\u00A0`), tabs (`\t`), or line breaks (`\n`) are not cleaned or validated, potentially leading to subtle errors.
 
-6. **No early length validation:**  
-   There’s no quick check to discard obvious cases (e.g., when the message is longer than the chest).
+6. **[Removed] Early length validation limitation:**  
+   This limitation has been addressed. The function now includes early length-aware validation logic and adaptively optimizes for extreme size differences between `message` and `chest`.
+
 
 ### Potential Future Improvements
 
