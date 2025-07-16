@@ -151,3 +151,6 @@ These validations are reflected in the included unit test suite.
 
 6. **Separation of concerns:**  
    Split logic into helper functions (normalization, counting, validation), making testing and extension easier.
+
+7. **Early exit with partial error reporting:**  
+   When the message cannot be formed, instead of reporting all missing characters (which requires scanning the full message), consider stopping at the first missing character. This could improve performance in very large messages where full error reporting is unnecessary.
