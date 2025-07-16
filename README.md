@@ -1,109 +1,113 @@
 # Fuertafit SOS Project
 
-Este proyecto ha sido desarrollado como parte de una prueba técnica para **Fuertafit**.  
-El objetivo es implementar una función llamada `can_form_message` que determine si es posible formar un mensaje utilizando únicamente los caracteres disponibles en un cofre.
+This project was developed as part of a technical test for **Fuertafit**.  
+The goal is to implement a function called `can_form_message` that determines whether it is possible to form a message using only the characters available in a chest.
 
-La función debe ignorar los espacios, respetar las cantidades de cada carácter y permitir cualquier tipo de carácter (letras, símbolos, números, letras con tilde, etc.).
+The function must ignore spaces, respect the quantity of each character, and allow any type of character (letters, symbols, numbers, accented letters, etc.).
 
-El proyecto incluye:
-- La función principal (`can_form_message`)
-- Tests unitarios cubriendo casos básicos y avanzados
-- Un análisis técnico de eficiencia, diseño y decisiones tomadas
+The project includes:
+- The main function (`can_form_message`)
+- Unit tests covering basic and advanced cases
+- A technical analysis of efficiency, design, and decisions made
 
-## Requisitos
-Este proyecto ha sido desarrollado con:
+## Requirements
 
-- **Python 3.10 o superior**
+This project was developed using:
+
+- **Python 3.10 or higher**
 - Visual Studio Code
 
-No se requiere instalación de librerías externas.
+No external libraries are required.
 
-## Estructura del proyecto
-
+## Project Structure
+```text
 ├── src/
-│ └── check_message.py # Lógica principal
+│ └── check_message.py        # Main logic
 ├── tests/
-│ └── test_check_message.py # Pruebas unitarias
-├── README.md # Documentación del proyecto
-├── analysis.md # Análisis técnico del proyecto
-└── .gitignore  # Exclusiones de Git
+│ └── test_check_message.py   # Unit tests
+├── README.md                 # Project documentation
+├── analysis.md               # Technical analysis
+└── .gitignore                # Git exclusions
+```
+## Installation and Execution
 
-## Instalación y ejecución
+Follow these steps to clone and run the project locally:
 
-Sigue estos pasos para clonar y ejecutar el proyecto localmente:
-
-### 1. Clona el repositorio y accede al directorio raíz del proyecto:
+### 1. Clone the repository and navigate to the root directory:
 ```bash
 git clone https://github.com/LorelayWilson/fuertafit_check_message
 cd fuertafit_check_message
 ```
-### 2. Probar la función:
-- Asegúrate de estar en el directorio raíz del proyecto.
-- Ejecuta el siguiente comando en terminal:
+### 2. Run the function:
+- Make sure you're in the project's root directory.
+- Run the following command in the terminal:
 ```python
 python src/check_message.py
 ```
-> Para usar la función con entradas personalizadas, puedes editar directamente el archivo `check_message.py` o importar la función desde otro script.
+> To use the function with custom inputs, you can either edit the `check_message.py` file directly or import the function from another script.
 
-## Funcionamiento de la función principal
+## Main Function Behavior
 
-La función `can_form_message(message: str, chest: str) -> tuple[bool, str]` determina si es posible formar un mensaje utilizando solo los caracteres disponibles en un cofre.  
+The function `can_form_message(message: str, chest: str) -> tuple[bool, str]` determines whether a message can be formed using only the characters available in a chest.
 
-Devuelve una tupla formada por:
-- Un `bool` indicando si el mensaje puede formarse (`True` o `False`)
-- Un `str` explicativo con el motivo (éxito o los caracteres que faltan)
+It returns a tuple:
+- A `bool` indicating whether the message can be formed (`True` or `False`)
+- An explanatory `str` with the reason (success or the missing characters)
 
-### Reglas que aplica:
-- Ignora espacios del mensaje y del cofre
-- No distingue entre mayúsculas y minúsculas (`a` y `A` se tratan igual)
-- No transforma letras con tilde ni símbolos: se usan tal cual están, y tampoco se ignoran los símbolos.
-- Respeta la cantidad de letras (no se puede usar más veces una letra de lo que hay en el cofre)
-- Si el mensaje está vacío, se considera **válido** (no requiere caracteres)
+### Rules applied:
+- Ignores spaces in both the message and the chest
+- Case-insensitive (`a` and `A` are treated the same)
+- Accented letters and symbols are not transformed: they are used as-is, and symbols are not ignored
+- Respects character count (a letter cannot be used more times than it appears in the chest)
+- If the message is empty, it is considered **valid** (no characters required)
 
-### Ejemplo de uso:
+### Example usage:
 ```python
 can_form_message("SOS", "PELIGROSOS")
-# Resultado: (True, "Mensaje puede formarse correctamente.")
+# Resultado: (True, "The message can be formed with the available characters.")
 
 can_form_message("RESCUEA", "RSCU")
-# Resultado: (False, "Faltan caracteres: E(2), A(1)")
+# Resultado: (False, "Missing characters: E(2), A(1)")
 
 can_form_message("", "AA")
-# Resultado: (True, "Mensaje vacío: no requiere letras para formarse.")
+# Resultado: (True, "Empty message can always be formed.")
 ```
 
 ## Tests
-El proyecto incluye un conjunto de **pruebas unitarias** escritas con el módulo estándar `unittest`, localizadas en el archivo:
+The project includes a set of **unit tests** written using Python’s standard `unittest` module, located in:
 ```bash
 tests/test_check_message.py
 ```
 
-### ¿Qué cubren los tests?
+### What do the tests cover?
 
-- Casos básicos de mensajes posibles e imposibles.
-- Ignorar espacios en el mensaje y el cofre.
-- Uso de símbolos, números y caracteres Unicode (como ñ, é, etc.).
-- Manejo de letras repetidas.
-- Casos extremos: mensajes vacíos, cofres vacíos, inputs largos.
-- Verificación del mensaje explicativo en la salida.
 
-### Cómo ejecutarlos
+- Basic cases of possible and impossible messages
+- Ignoring spaces in both the message and the chest
+- Use of symbols, numbers, and Unicode characters (like ñ, é, etc.)
+- Handling of repeated characters
+- Edge cases: empty messages, empty chests, long inputs
+- Verification of the explanatory message in the output
 
-1. Asegúrate de estar en el directorio raíz del proyecto.
-2. Ejecuta el siguiente comando en terminal:
+### How to run them
+
+1. Make sure you are in the project's root directory.
+2. Run the following command in the terminal:
 ```bash
   python -m unittest discover tests
 ```
-Esto ejecutará automáticamente todos los tests dentro de la carpeta `tests/`.
-> Los tests están diseñados para ejecutarse sin necesidad de librerías externas.
+This will automatically run all tests inside the  `tests/` folder.
 
-## Autora
+> The tests are designed to run without requiring any external libraries.
+
+## Author
 
 **Lorelay Pricop Florescu**  
-Graduada en Tecnologías Interactivas y Project Manager con experiencia en .NET, Python, Angular, Azure DevOps, IA y metodologías ágiles.  
+Graduate in Interactive Technologies and Project Manager with experience in .NET, Python, Angular, Azure DevOps, AI, and Agile methodologies.
 
 🔗 [LinkedIn](https://www.linkedin.com/in/lorelaypricop)  
-📧 Contacto: lorelay.pricop@gmail.com
+📧 Contact: lorelay.pricop@gmail.com
 
-# Notas
-> Algunas ideas de validación, estilo y estructura han sido revisadas con ayuda de herramientas de inteligencia artificial (IA), como apoyo para acelerar la documentación y validar casos límite.
+# Notes
+> Some ideas regarding validation, style, and structure were reviewed with the support of artificial intelligence (AI) tools, used to help accelerate documentation and validate edge case
+

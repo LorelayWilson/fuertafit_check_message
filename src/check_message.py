@@ -1,46 +1,46 @@
 """
-Este módulo contiene una función que determina si un mensaje puede ser formado
-utilizando los caracteres disponibles en un cofre, ignorando espacios
-Cada caracter del cofre solo se puede usar una vez.
+This module contains a function that determines if a message can be formed
+using the characters available in a chest, ignoring spaces.
+Each character in the chest can only be used once.
 """
 from collections import Counter
 
 def can_form_message(message, chest):
-    """Determina si el mensaje puede ser formado con los caracteres del cofre.
+    """Determines if a message can be formed with the characters from the chest.
     Args:
-        message (str): El mensaje que se quiere formar.
-        chest (str): Los caracteres disponibles en el cofre.
+        message (str): The message to be formed.
+        chest (str): The characters available in the chest.
     Returns:
-        tuple: (bool, str) indicando si se puede formar y un mensaje explicativo.
+        tuple: A tuple containing a boolean indicating if the message can be formed, and a string with details about the result.
     """
-    # Normalizar el mensaje y el cofre: eliminar espacio y pasar a minúsculas
+    # Normalize inputs by removing spaces and converting to lowercase
     message = message.replace(" ", "").lower()
     chest = chest.replace(" ", "").lower()
 
-    # Si el mensaje queda vacío tras limpiar, devolver True
+    # If the message is empty, return True
     if not message:
-        return True, "Mensaje vacío: no requiere caracteres para formarse."
-    # Si el cofre está vacío, devolver False
+        return True, "Empty message can always be formed."
+    # If the chest is empty, return False
     if not chest:
-        return False, "El cofre no contiene caracteres válidos."
+        return False, "The chest is empty, cannot form any message."
 
-    # Contar los caracteres disponibles en el cofre
+    # Count the characters in the chest
     chest_counter = Counter(chest)
 
-    # Contar los caracteres necesarios en el mensaje
+    # Count the characters in the message
     missing_counter = Counter()
     for char in message:
-        if chest_counter[char] > 0:  # Si el caracter está disponible en el cofre
-            chest_counter[char] -= 1  # Usar el caracter
+        if chest_counter[char] > 0:  # If the character is available in the chest
+            chest_counter[char] -= 1  # Use the character
         else:
-            missing_counter[char] += 1  # Si no está disponible, contar como faltante
+            missing_counter[char] += 1  # If not available, count it as missing
 
-    # Si hay caracteres que faltan, devolver False con los caracteres que faltan
+    # If there are any missing characters, return False with details
     if missing_counter:
         missing_str = ', '.join(f"{char}({count})" for char, count in missing_counter.items())
-        return False, f"Faltan caracteres: {missing_str}"
+        return False, f"Missing characters: {missing_str}"
     
-    return True, "El mensaje puede ser formado con los caracteres del cofre."
+    return True, "The message can be formed with the available characters."
 
 if __name__ == "__main__":
     print(can_form_message("SOS", "PELIGROSOS"))    # True

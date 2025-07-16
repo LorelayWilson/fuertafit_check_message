@@ -1,122 +1,121 @@
-# Análisis técnico
-Este análisis describe las decisiones técnicas tomadas en la implementación de la función `can_form_message`, evaluando eficiencia, estructura, escalabilidad y cobertura de casos límite.
+# Technical Analysis
+This analysis outlines the technical decisions behind the implementation of the `can_form_message` function, evaluating its efficiency, structure, scalability, and handling of edge cases.
 
-# Rendimiento
+# Performance
 
-### Complejidad Temporal (CPU)
-> La complejidad temporal mide cuántas operaciones realiza el algoritmo en función del tamaño del input.
+### Time Complexity (CPU)
+> The time complexity measures how many operation the algorithm performs on the input size.
 
-La función trabaja con dos cadenas: `message` (longitud m) y `chest` (longitud n). Las operaciones se distribuyen así:
-- **Preprocesamiento (limpieza de espacios):** O(n + m)  
-- **Conteo de caracteres del cofre (con `Counter`):** O(n)
-- **Recorrido y verificación del mensaje:** O(m)
+The function operates on two string: `message` (lenght m) and `chest` (lenght n). Operations are distributed as follows:
+- **Preprocessing (whitespace cleaning and lower):** O(n + m)  
+- **Counting chest characters (with `Counter`):** O(n)
+- **Traversing and validating the message:** O(m)
 
-No se utilizan bucles anidados ni estructuras costosas. Gracias al uso de `Counter`, cada acceso o modificación de frecuencia es O(1), lo que permite una validación eficiente.
+There are no nested loops or expensive structures. Thanks to the use of `Counter`, each frequency read or write is O(1), allowing efficient validation.
 
-> **Complejidad total:** `O(m + n)`  
-> Rendimiento lineal respecto al tamaño de las entradas. Escalable incluso con textos extensos.
+> **Total complexity:** `O(m + n)`  
+> Linear performance relative to input size. Scalable even for large texts.
 
-### Complejidad Espacial (Memoria)
+### Space Complexity (Memory)
 
-> Este análisis se enfoca en cuánta memoria adicional utiliza el algoritmo (sin contar los inputs).
+> This analysis focuses on how much additional memory the algorithm uses (excluding the inputs).
 
-La función usa:
+The function uses:
 
-- Dos `Counter`: uno para el cofre (`chest_counter`) y otro para letras faltantes (`missing_counter`).
-- Variables temporales (`message`, `chest` limpios, y el mensaje de salida).
+- Two `Counter` objects: one for the chest (`chest_counter`) and one for the missing characters (`missing_counter`).
+- Temporary variables (cleaned `message`, `chest` limpios, and the output message).
 
-> **Complejidad total:** `O(k)`, donde `k` es el número de caracteres distintos en `message + chest`.  
-> En la práctica, `k` es bajo (alfabeto limitado), por lo que el consumo de memoria es mínimo.
+> **Total complexity::** `O(k)`,where `k` is the number of unique characters in `message + chest`.
+> In practice,`k` is low (limited alphabet), so memory consumption is minimal.
 
-### Escalabilidad
+### Scalability
 
-> Evaluamos cómo se comporta el algoritmo frente a entradas grandes
+> We evaluate how the algorithm behaves with large inputs
 
-Gracias a su complejidad lineal, la función escala correctamente incluso con cadenas de miles de caracteres. Esto fue verificado en los tests (test_long_inputs) repitiendo frases extensas y demostrando estabilidad en rendimiento y exactitud.
+Thanks to its linear complexity, the function scales well even with strings containing thousands of characters. This was verified in tests (`test_long_inputs`) using repeated long phrases and demonstrating stability in both performance and accuracy.
 
-# Decisiones de Diseño
+# Design Decisions
 
-### Estructuras de datos elegidas
+### Chosen Data Structures
 
-Se utilizó `collections.Counter` por ser una estructura especializada para conteo de frecuencias en tiempo lineal, con operaciones de lectura, escritura y decremento en tiempo constante (`O(1)`). Esta decisión permite mantener el código limpio y eficiente, sin comprometer el rendimiento.
+`collections.Counter` was chosen as it’s a specialized structure for frequency counting in linear time, with read/write/decrement operations in constant time (`O(1)`). This choice keeps the code clean and efficient without sacrificing performance.
 
-**¿Por qué no `dict`?**  
-Aunque funcionalmente similar, un diccionario manual requiere inicialización y lógica adicional (`if key in dict`), lo que haría el código más verboso y propenso a errores.
+**Why not `dict`?**  
+While functionally similar, a manual dictionary requires extra logic for initialization (`if key in dict`), making the code more verbose and error-prone.
 
-La normalización previa con `str.replace()` y `str.lower()` asegura insensibilidad a mayúsculas y espacios, simplificando la lógica general.
+Pre-normalization using `str.replace()` and `str.lower()` ensures case-insensitivity and whitespace handling, simplifying the overall logic.
 
-### Trade-offs considerados
+### Considered Trade-offs
 
-En esta implementación se tomaron decisiones conscientes para equilibrar rendimiento, claridad y funcionalidad. A continuación se detallan los principales trade-offs evaluados:
+This implementation makes deliberate decisions to balance performance, clarity, and functionality. Below are the main evaluated trade-offs:
 
-| Factor en conflicto              | Decisión tomada                                                    | Lo que se gana                                       | Lo que se sacrifica                                  |
-|----------------------------------|---------------------------------------------------------------------|------------------------------------------------------|-------------------------------------------------------|
-| Tiempo de ejecución vs. Memoria | Uso de `Counter` para conteo rápido                                 | Operaciones en O(1), código limpio y eficiente       | Ligero uso extra de memoria (estructura adicional)    |
-| Simplicidad vs. Flexibilidad     | No se normalizan acentos ni caracteres Unicode equivalentes         | Lógica más simple, sin dependencias externas         | Comparación literal: `á ≠ a`, `ñ ≠ n`                 |
-| Legibilidad vs. Control detallado| Mensaje explicativo generado dinámicamente                          | Facilita entender por qué falla una comprobación     | Añade complejidad a la lógica del return              |
-| Completitud vs. Abstracción      | Se ignoraron optimizaciones menores como ordenar el `message`       | Menor tiempo de desarrollo, sin afectar Big O        | Posibles mejoras en ejecución con ciertos inputs      |
+| Conflicting Factor              | Decision Taken                                                | Benefit                                               | Sacrifice                                            |
+|--------------------------------|----------------------------------------------------------------|--------------------------------------------------------|------------------------------------------------------|
+| Execution Time vs. Memory      | Used `Counter` for fast counting                               | O(1) operations, clean and efficient code              | Slightly more memory usage (additional structure)    |
+| Simplicity vs. Flexibility     | No normalization of accents or Unicode equivalents             | Simpler logic, no external dependencies                | Literal comparison: `á ≠ a`, `ñ ≠ n`                 |
+| Readability vs. Detailed Control | Dynamically generated explanatory message                      | Easier to understand why validation fails              | Adds complexity to the return logic                  |
+| Completeness vs. Abstraction   | Ignored minor optimizations such as sorting `message`          | Faster development time, no impact on Big O            | Potential execution gains in specific inputs         |
 
-Estas decisiones se tomaron considerando que el objetivo principal era crear una función robusta, clara, eficiente y fácil de mantener, sin sobreoptimizar para casos poco comunes.
+These decisions aim to create a robust, clear, efficient, and maintainable function without over-optimizing for rare edge cases.
+### Handled Edge Cases
 
+The function is designed to handle the following edge cases correctly:
 
-### Casos extremos manejados
+- Empty messages → considered valid.
+- Empty chests → message cannot be formed.
+- Case insensitivity (`A` = `a`).
+- Ignores spaces in both strings.
+- Supports accented letters, Unicode, numbers, and symbols.
+- Correct handling of repeated letters.
+- Support for long inputs, such as phrases repeated hundreds of times.
 
-La función está diseñada para comportarse correctamente en los siguientes escenarios límite:
+These validations are reflected in the included unit test suite.
 
-- Mensajes vacíos → se consideran válidos.
-- Cofres vacíos → el mensaje no puede formarse.
-- Insensibilidad a mayúsculas (`A` = `a`).
-- Ignora espacios en ambas cadenas.
-- Soporte para letras tildadas, Unicode, números y símbolos.
-- Manejo correcto de letras repetidas.
-- Soporte para entradas largas, como frases repetidas cientos de veces.
+# Reflection
 
-Estas validaciones se reflejan en la suite de pruebas unitarias incluidas.
+### Strengths of the Solution
+- Efficient in time and memory.
+- Clear and readable code.
+- Comprehensive coverage of edge cases.
+- No external libraries required.
+- Easy to maintain and extend.
 
-# Reflexión
+### Identified Limitations
 
-### Fortalezas de la solución
-- Eficiente en tiempo y memoria.
-- Claridad y legibilidad en el código.
-- Cobertura completa de casos límite.
-- No depende de librerías externas.
-- Fácil de mantener y extender.
+1. **Literal character comparison:**  
+   The function treats each character as unique. It does not handle equivalents like `á ≠ a` or `ñ ≠ n`, which may be problematic for languages with accents or Unicode variants.
 
-### Limitaciones identificadas
+2. **No tolerance for typos:**  
+   Small variations like similar letters or numbers that resemble letters (`3` instead of `E`, etc.) are not accepted. Validation is strictly literal.
 
-1. **Comparación literal de caracteres:**
-   La función trata cada carácter como único. No considera equivalencias como `á` ≠ `a` o `ñ` ≠ `n`, lo que puede ser problemático en idiomas con tildes o variantes Unicode.
+3. **Lengthy error messages:**  
+   If many characters are missing, the explanatory message may become very long (`Missing characters: A(5), B(3), C(2), ...`), making it hard to read in some contexts.
 
-2. **Falta de tolerancia a errores tipográficos:**  
-   No se admiten pequeñas variaciones como letras parecidas o números que se parezcan a letras (`3` en vez de `E`, etc.). La validación es estrictamente literal.
+4. **No configuration options:**  
+   There’s no way to configure behavior like accent sensitivity, case sensitivity, or symbol handling. Logic is fixed and not parameterizable.
 
-3. **Mensajes de error extensos:**  
-   Si faltan muchos caracteres, el mensaje explicativo puede hacerse muy largo (`Faltan caracteres: A(5), B(3), C(2), ...`), dificultando la lectura en algunos contextos.
+5. **Invisible characters not detected:**  
+   Characters like non-breaking spaces (`\u00A0`), tabs (`\t`), or line breaks (`\n`) are not cleaned or validated, potentially leading to subtle errors.
 
-4. **Sin opciones de configuración:**  
-   No hay forma de configurar comportamientos como sensibilidad a tildes, distinción entre mayúsculas o símbolos. La lógica está fija y no es parametrizable.
+6. **No early length validation:**  
+   There’s no quick check to discard obvious cases (e.g., when the message is longer than the chest).
 
-5. **No detecta caracteres invisibles:**  
-   Caracteres como espacios duros (`\u00A0`), tabulaciones (`\t`) o saltos de línea (`\n`) no se eliminan ni validan, lo que puede llevar a errores sutiles.
+### Potential Future Improvements
 
-6. **Sin validación anticipada por longitud:**  
-   No se hace una verificación rápida para descartar casos obvios (por ejemplo, cuando el mensaje es más largo que el cofre).
+1. **Unicode normalization:**  
+   Use `unicodedata.normalize()` to handle equivalences like `á ≈ a`, improving multilingual support.
 
-### Mejoras futuras posibles
-1. **Normalización Unicode:**  
-   Usar `unicodedata.normalize()` para tratar equivalencias como `á ≈ a`, mejorando soporte multilingüe.
+2. **Error message summarization:**  
+   Truncate the list of missing letters if it’s too long, showing only the most relevant (e.g., "Missing characters: A(5), B(3), ... +2 more").
 
-2. **Resumen del mensaje de error:**  
-   Truncar el detalle de letras faltantes si es muy largo, mostrando solo las más relevantes (ej. "Faltan caracteres: A(5), B(3), ... +2 más").
+3. **Preventive validations:**  
+   Check if `len(message) > len(chest)` to quickly discard impossible cases before counting.
 
-3. **Validaciones preventivas:**  
-   Comprobar si `len(message) > len(chest)` para abortar casos imposibles antes del conteo.
+4. **Cleaning invisible characters:**  
+   Remove non-breaking spaces (`\u00A0`), tabs, or newlines that may silently affect output.
 
-4. **Limpieza de caracteres invisibles:**  
-   Eliminar espacios duros (`\u00A0`), tabulaciones o saltos de línea que puedan afectar silenciosamente.
+5. **User interface or CLI:**  
+   Create a visual or console-based interface to allow easy testing of different inputs.
 
-5. **Interfaz de usuario o CLI:**  
-   Crear una interfaz visual o de consola para permitir probar fácilmente diferentes entradas.
-
-6. **Separación de responsabilidades:**  
-   Dividir la lógica en funciones auxiliares (normalización, conteo, validación), facilitando testeo y extensión del código.
+6. **Separation of concerns:**  
+   Split logic into helper functions (normalization, counting, validation), making testing and extension easier.
